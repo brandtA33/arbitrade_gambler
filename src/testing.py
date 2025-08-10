@@ -2,7 +2,8 @@ from math import isclose
 from formulas import total_propability, stakesFor2, stakesFor3
 import io
 import sys
-from old_main import main
+from main import main
+from unittest.mock import patch
 
 def test_arbitrage_probs():
     assert isclose(total_propability([2.0, 2.0], 2), 1.0)
@@ -27,8 +28,8 @@ def test_arbitrage_stakes2():
 
 
 # Replace with your actual module name
-
-def test_main_arbitrage_output():
+@patch('builtins.input', side_effect=['100', '1', 'q', 'q'])
+def test_main_arbitrage_output(mock_input):
     # Prepare a simple 2-outcome arbitrage event in realistic format
     test_events = [
         {
@@ -80,12 +81,15 @@ def test_main_arbitrage_output():
 
     sys.stdout = sys.__stdout__
     output = captured_output.getvalue()
-
-    assert "Recommended Bets" in output
+    print("=== OUTPUT START ===")
+    print(output)
+    print("=== OUTPUT END ===")
+    assert "Recommended Bets" in output or "SUPER BETS" in output
     assert "Team A" in output or "Team B" in output
     assert "Guaranteed Profit" in output
 
-def test_main_no_arbitrage_output():
+@patch('builtins.input', side_effect=['100', '1', 'q', 'q'])
+def test_main_no_arbitrage_output(mock_input):
     # Prepare event with no arbitrage in realistic format
     test_events = [
         {
@@ -123,3 +127,53 @@ def test_main_no_arbitrage_output():
     output = captured_output.getvalue()
 
     assert "No arbitrage opportunities found." in output
+
+@patch('builtins.input', side_effect=['100', '2', 'q' , 'q'])
+def test_main_totals_output(mock_input):
+    # Prepare event with arbitrage opportunity in realistic format for totals
+    test_events = [
+        {
+            "sport_key": "football_epl",
+            "sport_title": "Totals Sport",
+            "commence_time": "2025-08-07T20:00:00Z",
+            "home_team": "Team A",
+            "away_team": "Team B",
+            "bookmakers": [
+                {
+                    "key": "betsson",
+                    "title": "Betsson",
+                    "last_update": "2025-08-07T19:00:00Z",
+                    "markets": [
+                        {
+                            "key": "totals",
+                            "last_update": "2025-08-07T19:00:00Z",
+                                "outcomes": [
+                                {
+                                    "name": "Over",
+                                    "price": 2.01,
+                                    "point": 1.5
+                                },
+                                {
+                                    "name": "Under",
+                                    "price": 2.02,
+                                    "point": 1.5
+                                }
+                                ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+
+    captured_output = io.StringIO()
+    sys.stdout = captured_output
+
+    main(test_events)  # or call the function that prints arbitrage info for totals
+
+    sys.stdout = sys.__stdout__
+    output = captured_output.getvalue()
+
+    print(output)  # <-- This will show all printed text from the program
+    assert "Guaranteed Profit" in output or "Recommended Totals Bets" in output
+

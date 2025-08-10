@@ -1,11 +1,13 @@
 
 
-# TRUSTED_SITES = {
-#     'betfair_ex_eu', 'betsson', 'matchbook', 'coolbet',
-#     'nordicbet', 'williamhill', 'sport888', 'marathonbet', 
-#     'pinnacle'
-# }
-TRUSTED_SITES = {'betsson', 'coolbet', 'nordicbet', 'betfair_ex_eu'}
+TRUSTED_SITES = {
+    'betfair_ex_eu', 'betsson', 'matchbook', 'coolbet',
+    'nordicbet', 'williamhill', 'sport888', 'marathonbet', 
+    'pinnacle'
+}
+# TRUSTED_SITES = {'betsson', 'coolbet', 'nordicbet', 'betfair_ex_eu'}
+# TRUSTED_SITES = {'betsson', 'coolbet', 'nordicbet'}
+
 # TRUSTED_SITES = {
 #     'betfair_ex_eu', 'betsson', 'coolbet',
 #     'nordicbet', 'marathonbet' 
@@ -14,9 +16,6 @@ TRUSTED_SITES = {'betsson', 'coolbet', 'nordicbet', 'betfair_ex_eu'}
 #     'betfair_ex_eu', 'betsson', 'coolbet',
 #     'nordicbet', 'williamhill', 'sport888', 'marathonbet', 
 # }
-
-
-
 
 # Parses events
 # TRUSTED_SITES can be upgraded. 
